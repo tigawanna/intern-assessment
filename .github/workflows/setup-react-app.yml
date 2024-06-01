@@ -1,0 +1,43 @@
+name: Payd Intern Technical Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch-name:
+        type: string
+        description: Name of the branch to initialize React app in
+        required: true
+        default: implementation
+
+jobs:
+  setup-react-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "${{ secrets.GIT_USER_EMAIL }}"
+          git config --global user.name "${{ secrets.GIT_USER_NAME }}"
+
+      - name: Create branch
+        run: |
+          git checkout -b ${{ github.event.inputs.branch-name }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4  # Update version to v4 for Node.js 20
+        with:
+          node-version: "20"
+
+      - name: Create React App
+        run: |
+          npx create-react-app payd-test
+          cd payd-test
+          git add .
+          git commit -m "Initialize React app"
+          git push origin ${{ github.event.inputs.branch-name }}
+
+      - name: Push changes
+        run: |
+          git push origin ${{ github.event.inputs.branch-name }}
