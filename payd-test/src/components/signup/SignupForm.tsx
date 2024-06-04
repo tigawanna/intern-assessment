@@ -9,6 +9,7 @@ export default function SignupForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(signUpSchema),
@@ -16,12 +17,17 @@ export default function SignupForm() {
 
   return (
     <div className="basis-full">
-      <div className="py-16 px-12 rounded-xl  shadow-2xl my-2">
-        <div className="mb-4 text-center" style={{ color: "#18d26e" }}>
+      <div className="py-16 px-1 md:px-10 rounded-xl shadow-2xl my-2">
+        <div className="mb-4 text-center text-green">
           <h1 className="text-3xl mb-4">Register</h1>
           <h1 className="text-xl">Join a community of online workers</h1>
         </div>
-        <form onSubmit={handleSubmit((data) => console.log(data))}>
+        <form
+          onSubmit={handleSubmit((data) => {
+            console.log(data);
+            reset();
+          })}
+        >
           <div className="mb-4">
             <label htmlFor="email">Email</label>
             <input
@@ -74,12 +80,12 @@ export default function SignupForm() {
             <div>
               <input
                 type="checkbox"
-                className="border border-gray-200 px-2 py-1 w-full"
+                className="border border-gray-200 px-2 py-1 w-full accent-green"
               />
             </div>
             <span>
               I accept{" "}
-              <a href="#" className="font-semibold">
+              <a href="#" className="font-semibold text-red-400 underline">
                 Terms and conditions
               </a>
             </span>
@@ -87,7 +93,7 @@ export default function SignupForm() {
           <div className="mt-6">
             <button
               type="submit"
-              className="w-full bg-green-500 text-center text-white py-3 rounded-lg"
+              className="w-full bg-buttons text-center text-white py-3 rounded-lg"
             >
               Register
             </button>
@@ -97,7 +103,7 @@ export default function SignupForm() {
           <h6 className="text-center">
             Already have an account?{" "}
             <span>
-              <a href="#">
+              <a href="#" className="text-red-400">
                 <b>Login</b>
               </a>
             </span>

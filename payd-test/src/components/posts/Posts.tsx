@@ -10,6 +10,8 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
+  Skeleton,
+  Stack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Pagination from "./Pagination";
@@ -28,23 +30,32 @@ interface PostData {
 export default function Posts() {
   const [posts, setPosts] = useState<PostData[]>([]);
   const [error, setError] = useState();
+  const [isLoading, setisLoading] = useState(false);
+
   const dispatch: AppDispatch = useDispatch();
   const { currentPage, postsPerPage } = useSelector(
     (store: RootState) => store.paginate
   );
 
   useEffect(() => {
+    setisLoading(true);
     apiClient
       .get("/posts")
       .then((res) => {
+        setisLoading(false);
         setPosts(res.data);
         dispatch(updateTotalPosts(res.data.length));
       })
-      .catch((error) => setError(error.message));
+      .catch((error) => {
+        setisLoading(false);
+        setError(error.message);
+      });
   }, []);
 
   const { firstIndex, lastIndex } = usePagination(currentPage, postsPerPage);
   const paginatedPosts = posts.slice(firstIndex, lastIndex);
+
+  const [skeletons] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
   return (
     <>
@@ -54,26 +65,34 @@ export default function Posts() {
           <AlertTitle>{error}</AlertTitle>
         </Alert>
       )}
-      <TableContainer maxW={"90%"} marginX={"auto"}>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>PostId</Th>
-              <Th>Tittle</Th>
-              <Th>Body</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {paginatedPosts?.map((post, index) => (
-              <Tr key={index}>
-                <Td>{post.id}</Td>
-                <Td>{post.title}</Td>
-                <Td>{post.body}</Td>
+      {isLoading ? (
+        <Stack>
+          {skeletons.map((skeleton) => (
+            <Skeleton height="40px" key={skeleton} />
+          ))}
+        </Stack>
+      ) : (
+        <TableContainer maxW={"90%"} marginX={"auto"}>
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>PostId</Th>
+                <Th>Tittle</Th>
+                <Th>Body</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+            </Thead>
+            <Tbody>
+              {paginatedPosts?.map((post, index) => (
+                <Tr key={index}>
+                  <Td>{post.id}</Td>
+                  <Td>{post.title}</Td>
+                  <Td>{post.body}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      )}
       <Box overflowX="scroll">
         <Pagination />
       </Box>

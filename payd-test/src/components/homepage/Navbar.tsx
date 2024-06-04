@@ -11,7 +11,7 @@ export default function Navbar() {
       boxShadow={"lg"}
     >
       <Center>
-        <Link target="/">
+        <Link href="/">
           <Image src={logo} alt="logo" />
         </Link>
       </Center>
