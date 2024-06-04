@@ -1,4 +1,4 @@
-import { Box, Center, Image } from "@chakra-ui/react";
+import { Box, Center, Image, Link } from "@chakra-ui/react";
 import logo from "../../assets/payd.png";
 
 export default function Navbar() {
@@ -11,7 +11,9 @@ export default function Navbar() {
       boxShadow={"lg"}
     >
       <Center>
-        <Image src={logo} alt="logo" />
+        <Link target="/">
+          <Image src={logo} alt="logo" />
+        </Link>
       </Center>
     </Box>
   );
