@@ -1,7 +1,6 @@
 import {
   TableContainer,
   Table,
-  TableCaption,
   Thead,
   Tr,
   Td,
@@ -11,45 +10,47 @@ import {
 } from "@chakra-ui/react";
 import Footer from "../footer/Footer";
 import Navbar from "../homepage/Navbar";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+interface PostData {
+  body: string;
+  id: number;
+  title: string;
+}
 
 export default function PostsPageLayout() {
+  const [posts, setPosts] = useState<PostData[]>();
+
+  useEffect(() => {
+    axios
+      .get("https://jsonplaceholder.typicode.com/posts")
+      .then((res) => setPosts(res.data))
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
     <>
       <Navbar />
       <TableContainer>
         <Table variant="simple">
-          <TableCaption>Imperial to metric conversion factors</TableCaption>
           <Thead>
             <Tr>
-              <Th>To convert</Th>
-              <Th>into</Th>
-              <Th isNumeric>multiply by</Th>
+              <Th>PostId</Th>
+              <Th>Tittle</Th>
+              <Th>Body</Th>
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>inches</Td>
-              <Td>millimetres (mm)</Td>
-              <Td isNumeric>25.4</Td>
-            </Tr>
-            <Tr>
-              <Td>feet</Td>
-              <Td>centimetres (cm)</Td>
-              <Td isNumeric>30.48</Td>
-            </Tr>
-            <Tr>
-              <Td>yards</Td>
-              <Td>metres (m)</Td>
-              <Td isNumeric>0.91444</Td>
-            </Tr>
+            {posts?.map((post, index) => (
+              <Tr key={index}>
+                <Td>{post.id}</Td>
+                <Td>{post.title}</Td>
+                <Td>{post.body}</Td>
+              </Tr>
+            ))}
           </Tbody>
-          <Tfoot>
-            <Tr>
-              <Th>To convert</Th>
-              <Th>into</Th>
-              <Th isNumeric>multiply by</Th>
-            </Tr>
-          </Tfoot>
+          <Tfoot></Tfoot>
         </Table>
       </TableContainer>
       <Footer />
