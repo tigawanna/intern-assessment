@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* 
+{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.maincon
+{
+    background-image: linear-gradient(to bottom right, #132539, #18d26e );
+}
