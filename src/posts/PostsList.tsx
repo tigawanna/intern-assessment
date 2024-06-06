@@ -1,4 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Post } from "./types";
+import { CreatepostForm } from "./CreatepostForm";
+
 interface PostsListProps {}
 
 export function PostsList({}: PostsListProps) {
@@ -25,15 +28,11 @@ export function PostsList({}: PostsListProps) {
           </div>
         );
       })}
+      <div className="fixed bottom-[15%] right-[5%] z-50">
+        <CreatepostForm />
+      </div>
     </div>
   );
-}
-
-export interface Post {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
 }
 
 interface PostsListSuspenseFallbackProps {

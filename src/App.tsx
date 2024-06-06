@@ -5,7 +5,6 @@ import { PostsList, PostsListSuspenseFallback } from "./posts/PostsList";
 function App() {
   return (
     <div>
-      <PostForm />
       <Suspense fallback={<PostsListSuspenseFallback />}>
         <PostsList />
       </Suspense>
