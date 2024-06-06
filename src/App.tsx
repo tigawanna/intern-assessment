@@ -1,14 +1,12 @@
-import { useState } from 'react'
 
+import { PostsList } from "./posts/PostsList";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className='bg-red-400'>
-      uwu
+    <div>
+      <PostsList />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
