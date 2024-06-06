@@ -9,20 +9,28 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@chakra-ui/react";
 
 interface PostFormProps {}
 
 export function PostForm({}: PostFormProps) {
+  const toast = useToast();
   const qc = useQueryClient();
   const [input, setInput] = useState({
-    title: "",
-    body: "",
-    userId: 0,
+    title: "A random post about stuff",
+    body: "hello world , This is  random post about stuff",
+    userId: 4,
   });
   const mutation = useMutation({
     mutationFn: addPost,
     onSuccess: (data) => {
-      console.log("created =============== ",data);
+      toast({
+        title: "Post added.",
+        description: "Successfully added your post",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
       qc.invalidateQueries({
         queryKey: ["posts"],
       });
@@ -35,7 +43,7 @@ export function PostForm({}: PostFormProps) {
   }
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log("submitting ",input);
+    console.log("submitting ", input);
     mutation.mutate({ post: input });
   }
   return (
@@ -99,7 +107,7 @@ export function PostForm({}: PostFormProps) {
   );
 }
 
-function addPost({ post }: { post: Omit<Post,"id"> }): Promise<Post> {
+function addPost({ post }: { post: Omit<Post, "id"> }): Promise<Post> {
   return fetch("https://jsonplaceholder.typicode.com/posts", {
     method: "POST",
     body: JSON.stringify(post),

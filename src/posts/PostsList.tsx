@@ -6,7 +6,7 @@ export function PostsList({}: PostsListProps) {
     queryKey: ["posts"],
     queryFn: () => {
       return fetch("https://jsonplaceholder.typicode.com/posts").then(
-        (res) => res.json() as Promise<Post[]>
+        (res) => res.json() as Promise<Post[]>,
       );
     },
   });
@@ -15,10 +15,13 @@ export function PostsList({}: PostsListProps) {
     <div className="w-full h-full flex flex-wrap justify-center gap-2 p-2">
       {data?.map((post) => {
         return (
-          <div key={post.id} className="flex flex-col gap-0.5  p-4 w-full md:w-[44%] lg:w-[30%]">
-            <h2 className="text-2xl font-bold">{post.title}</h2>
+          <div
+            key={post.id}
+            className="flex flex-col gap-0.5  p-5 w-full md:w-[44%] lg:w-[30%] hover:bg-base-300 rounded-sm"
+          >
+            <h2 className="text-2xl font-bold line-clamp-2">{post.title}</h2>
             <p className="text-sm">{post.body}</p>
-            <span>{post.userId}</span>
+            <span>by #{post.userId}</span>
             <hr />
           </div>
         );
