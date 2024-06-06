@@ -3,34 +3,34 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-    ModalBody,
+  ModalBody,
   ModalCloseButton,
   Button,
   useDisclosure,
+
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+import { EditIcon} from "@chakra-ui/icons";
 import { PostForm } from "./PostForm";
 import { Post } from "./types";
 import React from "react";
-interface CreatepostFormProps {
-    id?: number;
-    post?:Post
+interface UpdatepostFormProps {
+  id: number;
+  post: Post;
 }
 
-export function CreatepostForm({id,post}: CreatepostFormProps) {
-      const { isOpen, onOpen, onClose } = useDisclosure();
-        const finalRef = React.useRef(null);
+export function UpdatepostForm({ id, post }: UpdatepostFormProps) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const finalRef = React.useRef(null);
   return (
     <>
       <Button onClick={onOpen} className="flex gap-3 ">
-        <AddIcon className="size-10"/>
-        Add Post
+        <EditIcon className="size-10" />
       </Button>
 
       <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add Post</ModalHeader>
+          <ModalHeader>Update Post</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <PostForm onClose={onClose} id={id} post={post} />

@@ -12,6 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@chakra-ui/react";
 import { Post } from "./types";
 import { Textarea } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
 interface PostFormProps {
   id?: number;
   post?: Post;
@@ -30,7 +31,8 @@ export function PostForm({ id, post, onClose }: PostFormProps) {
 
   const create_mutation = useMutation({
     mutationFn: addPost,
-    onSuccess: () => {
+    onSuccess: (data) => {
+
       toast({
         title: "Post added.",
         description: "Successfully added your post",
@@ -38,9 +40,10 @@ export function PostForm({ id, post, onClose }: PostFormProps) {
         duration: 4000,
         isClosable: true,
       });
-      qc.invalidateQueries({
-        queryKey: ["posts"],
-      });
+      qc.setQueryData(["posts"], (old: any) => [data, ...old]);
+      // qc.invalidateQueries({
+      //   queryKey: ["posts"],
+      // });
       onClose();
     },
     onError() {
@@ -56,7 +59,8 @@ export function PostForm({ id, post, onClose }: PostFormProps) {
 
   const update_mutation = useMutation({
     mutationFn: updatePost,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(" success updating  ============= ",data)
       toast({
         title: "Post updated.",
         description: "Successfully updated your post",
@@ -69,7 +73,8 @@ export function PostForm({ id, post, onClose }: PostFormProps) {
       });
       onClose();
     },
-    onError() {
+    onError(err) {
+      console.log("err updating ============= ",err)
       toast({
         title: "Error",
         description: "Failed to update your post",
@@ -79,6 +84,35 @@ export function PostForm({ id, post, onClose }: PostFormProps) {
       });
     },
   });
+
+
+ const delete_mutation = useMutation({
+   mutationFn: deletePost,
+   onSuccess: () => {
+     toast({
+       title: "Post deleted.",
+       description: "Successfully deleted your post",
+       status: "success",
+       duration: 4000,
+       isClosable: true,
+     });
+     qc.invalidateQueries({
+       queryKey: ["posts"],
+     });
+     onClose();
+   },
+   onError() {
+     toast({
+       title: "Error",
+       description: "Failed to delete your post",
+       status: "error",
+       duration: 4000,
+       isClosable: true,
+     });
+   },
+ });
+
+
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
@@ -162,11 +196,22 @@ export function PostForm({ id, post, onClose }: PostFormProps) {
             isLoading={create_mutation.isPending || update_mutation.isPending}
             disabled={create_mutation.isPending || update_mutation.isPending}
             loadingText="Submitting"
+          
             size={"sm"}
-            className="max-w-[90%] w-full btn"
+            className="w-full"
             type="submit">
             Submit
           </Button>
+          {id && (
+            <Button onClick={() => delete_mutation.mutate({ id })}
+            disabled={delete_mutation.isPending}
+            isLoading={delete_mutation.isPending}
+            loadingText="Deleting..."
+            colorScheme="red" size="sm" className="flex gap-3 w-full">
+              <DeleteIcon className="s" />
+              Delete Post
+            </Button>
+          )}
         </FormControl>
       </form>
     </div>
@@ -191,4 +236,10 @@ function updatePost({ post }: { post: Post }): Promise<Post> {
       "Content-type": "application/json; charset=UTF-8",
     },
   }).then((response) => response.json() as Promise<Post>);
+}
+
+function deletePost({ id }: { id: number }): Promise<void> {
+  return fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+    method: "DELETE",
+  }).then((response) => response.json() as Promise<void>);
 }

@@ -1,6 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Post } from "./types";
 import { CreatepostForm } from "./CreatepostForm";
+import { UpdatepostForm } from "./UpdatepostForm";
 
 interface PostsListProps {}
 
@@ -20,11 +21,14 @@ export function PostsList({}: PostsListProps) {
         return (
           <div
             key={post.id}
-            className="flex flex-col gap-0.5  p-5 w-full md:w-[44%] lg:w-[30%] hover:bg-base-300 rounded-lg">
+            className="flex flex-col gap-0.5  p-5 w-full md:w-[44%] lg:w-[30%] hover:bg-base-300 rounded-lg relative">
             <h2 className="text-2xl font-bold line-clamp-2">{post.title}</h2>
             <p className="text-sm">{post.body}</p>
             <span>by #{post.userId}</span>
             <hr />
+            <div className="flex gap-3 absolute bottom-0 right-0">
+              <UpdatepostForm id={post.id} post={post} />
+            </div>
           </div>
         );
       })}
