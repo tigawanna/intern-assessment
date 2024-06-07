@@ -1,12 +1,10 @@
-import { Suspense } from "react";
-import { PostsList, PostsListSuspenseFallback } from "./posts/PostsList";
+
+import { Posts } from "./posts/Posts";
 
 function App() {
   return (
     <div>
-      <Suspense fallback={<PostsListSuspenseFallback />}>
-        <PostsList />
-      </Suspense>
+      <Posts />
     </div>
   );
 }
