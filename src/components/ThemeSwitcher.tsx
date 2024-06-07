@@ -5,7 +5,7 @@ interface ThemeSwitcherProps {
 }
 
 export function ThemeSwitcher({}:ThemeSwitcherProps){
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { toggleColorMode } = useColorMode();
 return (
   <div className="flex flex-col items-center justify-center">
     <label className="swap swap-rotate">
