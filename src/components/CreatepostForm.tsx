@@ -27,7 +27,7 @@ export function CreatepostForm({id,post}: CreatepostFormProps) {
         Add Post
       </Button>
 
-      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} colorScheme="brand">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add Post</ModalHeader>
