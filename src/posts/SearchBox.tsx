@@ -24,7 +24,7 @@ export function SearchBox({ isDebouncing, setKeyword, keyword, inputProps }: Sea
           className="w-full "
           value={keyword}
           onChange={(e) => {
-            setKeyword((prev) => {
+            setKeyword(() => {
               return e.target.value;
             });
           }}

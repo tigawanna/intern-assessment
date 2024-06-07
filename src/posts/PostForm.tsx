@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@chakra-ui/react";
-import { Post } from "./types";
+import type { Post } from "./types";
 import { Textarea } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 interface PostFormProps {
@@ -59,6 +59,14 @@ export function PostForm({ id, post, onClose }: PostFormProps) {
 
   const update_mutation = useMutation({
     mutationFn: updatePost,
+    onMutate: (variables) => {
+      qc.setQueryData(["posts"], (old: any) => {
+        return old.map((post: Post) => {
+          return post.id === variables.post.id ? variables.post : post;
+        });
+      });
+      onClose();
+    },
     onSuccess: (data) => {
       console.log(" success updating  ============= ",data)
       toast({
@@ -68,26 +76,34 @@ export function PostForm({ id, post, onClose }: PostFormProps) {
         duration: 4000,
         isClosable: true,
       });
-      qc.invalidateQueries({
-        queryKey: ["posts"],
-      });
+      // qc.invalidateQueries({
+      //   queryKey: ["posts"],
+      // });
       onClose();
     },
-    onError(err) {
-      console.log("err updating ============= ",err)
-      toast({
-        title: "Error",
-        description: "Failed to update your post",
-        status: "error",
-        duration: 4000,
-        isClosable: true,
-      });
-    },
+    // onError(err) {
+    //   console.log("err updating ============= ",err)
+    //   toast({
+    //     title: "Error",
+    //     description: "Failed to update your post",
+    //     status: "error",
+    //     duration: 4000,
+    //     isClosable: true,
+    //   });
+    // },
   });
 
 
  const delete_mutation = useMutation({
    mutationFn: deletePost,
+   onMutate: (variables) => {
+     qc.setQueryData(["posts"], (old: any) => {
+       return old.filter((post: Post) => {
+         return post.id !== variables.id;
+       });
+     });
+     onClose();
+   },
    onSuccess: () => {
      toast({
        title: "Post deleted.",
@@ -96,20 +112,17 @@ export function PostForm({ id, post, onClose }: PostFormProps) {
        duration: 4000,
        isClosable: true,
      });
-     qc.invalidateQueries({
-       queryKey: ["posts"],
-     });
-     onClose();
+
    },
-   onError() {
-     toast({
-       title: "Error",
-       description: "Failed to delete your post",
-       status: "error",
-       duration: 4000,
-       isClosable: true,
-     });
-   },
+  //  onError() {
+  //    toast({
+  //      title: "Error",
+  //      description: "Failed to delete your post",
+  //      status: "error",
+  //      duration: 4000,
+  //      isClosable: true,
+  //    });
+  //  },
  });
 
 

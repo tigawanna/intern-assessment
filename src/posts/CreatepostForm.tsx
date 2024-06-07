@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { PostForm } from "./PostForm";
-import { Post } from "./types";
+import type { Post } from "./types";
 import React from "react";
 interface CreatepostFormProps {
     id?: number;
