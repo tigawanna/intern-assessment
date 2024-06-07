@@ -1,9 +1,9 @@
 
-import { Posts } from "./posts/Posts";
+import { Posts } from "./components/Posts";
 
 function App() {
   return (
-    <div>
+    <div className="bg-base-100 text-base-content">
       <Posts />
     </div>
   );

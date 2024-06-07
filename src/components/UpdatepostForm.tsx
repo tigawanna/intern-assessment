@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { EditIcon} from "@chakra-ui/icons";
 import { PostForm } from "./PostForm";
-import { Post } from "./types";
+import type { Post } from "./types";
 import React from "react";
 interface UpdatepostFormProps {
   id: number;

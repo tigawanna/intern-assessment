@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { PostsListSuspenseFallback, PostsList } from "./PostsList";
 import { SearchBox } from "./SearchBox";
 import { useDebouncedSearch } from "../utils/use-search";
-
+import { ThemeSwitcher } from "./ThemeSwitcher";
 interface PostsProps {}
 
 export function Posts({}: PostsProps) {
@@ -11,7 +11,10 @@ export function Posts({}: PostsProps) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-2">
       <div className="w-full z-20 bg-base-200 sticky top-0  px-3 flex flex-col  items-center justify-center gap-1">
+        <div className="w-full flex justify-between">
         <h1 className="text-2xl font-bold bg-base-200/30 p-2">Posts</h1>
+        <ThemeSwitcher/>
+        </div>
         <SearchBox
           inputProps={{
             placeholder: "Search by title",
