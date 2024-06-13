@@ -30,3 +30,6 @@ export function Posts({}: PostsProps) {
     </div>
   );
 }
+
+
+

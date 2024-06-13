@@ -22,7 +22,7 @@ export function CreatepostForm({id,post}: CreatepostFormProps) {
         const finalRef = React.useRef(null);
   return (
     <>
-      <Button onClick={onOpen} className="flex gap-3 ">
+      <Button  onClick={onOpen} className="flex gap-3 btn btn-primary ">
         <AddIcon className="size-10"/>
         Add Post
       </Button>

@@ -41,9 +41,7 @@ export function PostForm({ id, post, onClose }: PostFormProps) {
         isClosable: true,
       });
       qc.setQueryData(["posts"], (old: any) => [data, ...old]);
-      // qc.invalidateQueries({
-      //   queryKey: ["posts"],
-      // });
+
       onClose();
     },
     onError() {
